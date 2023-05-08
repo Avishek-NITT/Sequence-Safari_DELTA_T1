@@ -13,7 +13,7 @@
 .wrapper{
     
     width: 75vmin;
-    height: 90vmin;
+    height: 98vmin;
     border-radius: 4%;
     overflow: hidden;
     display: flex;
@@ -132,10 +132,27 @@ body{
   .up {
     position: relative;
     top: -4px;
+    margin-top: 2%;
   }
   
   
-  
+  .color_seq{
+    height: 30vmin;
+    background-color: black;
+    border-width: 2vmin;
+    border-style:groove;
+    border-color: rgb(88, 77, 77);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+  }
+
+  .color_blocks{
+    padding: 20%;
+    
+  }
 
   
   

@@ -1,4 +1,5 @@
 const playBoard = document.querySelector(".playground");
+const sequence = document.querySelector(".color_seq");
 const scoreElement= document.querySelector(".score");
 const highScoreElement = document.querySelector(".high-score")
 const timerElement = document.querySelector(".timer")
@@ -68,10 +69,32 @@ const spawn_colors = () =>{
 
 
 const spawnFood= () => {
+    let cond = 0;
     for(let i =0; i < color_sequence.length; i++){
+        cond =1;
         foodX = Math.floor(Math.random() * 20)+1;
         foodY = Math.floor(Math.random() * 20)+1;
-        food.push([foodX,foodY]);
+        //Checking if the new food spawn doesnt collide with snake body or other foods
+        for(let j=0; j < snakeBody.length; j++){
+            if (snakeBody[j][0] !== foodX && snakeBody[j][1] !== foodY ){
+                continue;
+            }else{
+                cond = 0;
+            }
+        }
+        for(let j =0; j < food.length; j++){
+            if(foodX !== food[j][0] && foodY !== food[j][1]){
+                continue;
+            }else{
+                cond = 0;
+            }
+        }
+        if(cond){
+            food.push([foodX,foodY]);
+        }else{
+            i--;
+        }
+        
     } 
           
 }
@@ -117,11 +140,11 @@ const changeDirection = (e) =>{
     
     if(gameStart===1){   //Game starts here
         gameStart++;
-        spawn_colors();
-        spawnFood();
         snakeBody[0] = [snakeX,snakeY];
         snakeBody.push([snakeX-x1, snakeY-y1]);
-        snakeBody.push([snakeX-x2, snakeY -y2]);    //Loads the food coordinates into the array        
+        snakeBody.push([snakeX-x2, snakeY -y2]);    //Loads the food coordinates into the array   
+        spawn_colors();
+        spawnFood();     
         timerId = setInterval(countDown,1000)
         setIntervalID = setInterval(initGame,125);
     
@@ -181,6 +204,13 @@ const initGame = () => {
         htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; background-color: #${color_sequence[i]} "> </div>`;
     } 
     playBoard.innerHTML = htmlMarkup;
+    
+    //Showing the color sequence
+    let color_markup = "";
+    for(let i =0 ; i < color_sequence.length; i++){
+        color_markup += `<div style ="color_blocks; background-color: #${color_sequence[i]}; color: #${color_sequence[i]}">Text</div>`;
+    }
+    sequence.innerHTML = color_markup;
     
     //Checking if any food is eaten
     for(let i =0 ; i < food.length; i++){
