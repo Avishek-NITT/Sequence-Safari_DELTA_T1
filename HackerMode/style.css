@@ -1,0 +1,149 @@
+@font-face {
+    font-family: font_heading;
+    src: url(Font/TheBomb-7B9gw.ttf);
+}
+
+
+*{
+    padding: 0;
+    margin: 0;
+}
+
+
+.wrapper{
+    
+    width: 75vmin;
+    height: 90vmin;
+    border-radius: 4%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+body{
+    background-image: linear-gradient(to right, #8e2de2, #4a00e0);
+    background-size: cover;
+    
+    background-position:50% 50%;
+    display: flex;
+    align-items: top;
+    justify-content: center;
+    min-height: 95vh;
+}
+.game-name{
+    color: rgba(65, 230, 255, 0.818);
+    text-align: center;
+    font-family: font_heading;
+    font-size: large;
+}
+.game-details{
+    border-radius: 8%;
+    font-weight: 50; 
+    font-size: 1.2rem;
+    padding: 20px 27px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(36, 5, 57);
+}
+.timer{
+    color: red;
+}
+
+.playground{
+    background-color: rgb(143, 255, 161);
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(20,1fr);
+    grid-template-rows: repeat(20,1fr);
+
+
+    
+}
+
+.food{
+    background: red;
+}
+
+.head{
+    background:blue;
+}
+
+.snake_body{
+    background: green;
+}
+
+.buttons{
+    background-color: orange;
+    height: 5vmin;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+    
+}
+
+.butt{
+    background-color: green;
+}
+
+
+
+
+.keys {
+    font-family: 'Lato', sans-serif;    
+    text-align: center;
+    width: 100%;
+    height: 40%;
+    
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border:1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  }
+  
+  .arr {
+    cursor: pointer;
+    width: 18%;
+    height: 40%;
+    text-align: center;
+    line-height: 90px;
+    background: grey;
+    font-size: 50px;
+    border-radius: 4%;
+    border-right: 10px solid darken(grey, 20);
+    border-bottom: 10px solid darken(grey, 20);
+    border-left: 10px solid darken(grey, 15);
+    border-top: 10px solid darken(grey, 10);  
+    display: inline-block;
+    margin: 5px;
+    transition: all .05s linear;
+    &:active {
+      border-bottom: 8px solid darken(grey, 20);
+      text-shadow: 0 0 10px white, 0 0 10px white, 0 0 20px white;    
+      transform: translate(0, 2px);
+    }
+    user-select: none;
+  }
+  
+  .up {
+    position: relative;
+    top: -4px;
+  }
+  
+  
+  
+
+  
+  
+
+
+
+
+  
+  
+  
+  
