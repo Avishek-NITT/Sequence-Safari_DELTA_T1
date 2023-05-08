@@ -31,7 +31,7 @@ let word_array = [
 let game_pause = 0;
 let color_sequence = [];
 let audio_eatfood = new Audio("Audio/Eat_food.mp3");
-
+let grow = 0;
 let highScore = localStorage.getItem("high-score") || 0;
 highScoreElement.innerText = `High Score = ${highScore}`;
 
@@ -257,6 +257,11 @@ const initGame = () => {
 
     if (gameOver) return handleGameOver();
     
+    if(grow){  //If snake has completed a sequence, snake will grow in size by 3 cells
+        snakeBody.push([snakeX, snakeY]);
+        grow--;
+    }
+
     htmlMarkup = "";
     //Spawning food every iteration
     for(let i =0; i < food.length; i++){
@@ -305,9 +310,11 @@ const initGame = () => {
         highScoreElement.innerText = `High Score = ${highScore}`;
         food_eaten=0;
     
-    }    
+    }
+
     if(food.length===0){
-        currentTime += 10;
+        currentTime += 5;
+        grow = 3;
         spawn_colors();
         spawnFood();
         for(let i =0; i < food.length; i++){
