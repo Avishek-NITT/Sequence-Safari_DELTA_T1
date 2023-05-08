@@ -21,15 +21,16 @@ let timerId;
 let htmlMarkup = "";
 let lives =3;
 let speed = 125;
-let colorArray = [
-    ['FF0000', '000CFF', '7C00FF' , 'FF8B00'],
-    ['00FFE8', 'FFEC00', '32FF00', 'FF0000'],
-    ['FF8B00', '7C00FF', '32FF00'],
-    ['000CFF', 'FF00F0', 'FF8B00', '32FF00', 'FF0000'],
-    ['32FF00', '7C00FF', 'FFEC00']
+let word_array = [
+    ['D', 'E', 'L', 'T','A'],
+    ['T','A', 'S', 'K'],
+    ['W', 'E', 'B', 'D','E','V'],
+    ['S', 'Y','S','A','D'],
+    ['A','P','P','D','E','V']
 ];
 let game_pause = 0;
 let color_sequence = [];
+let audio_eatfood = new Audio("Audio/Eat_food.mp3");
 
 let highScore = localStorage.getItem("high-score") || 0;
 highScoreElement.innerText = `High Score = ${highScore}`;
@@ -58,7 +59,15 @@ const handleGameOver = () => {
         snakeY = 10;
         snakeBody[0] = [snakeX,snakeY];
         snakeBody.push([snakeX-x1, snakeY-y1]);
-        snakeBody.push([snakeX-x2, snakeY -y2]);    //Loads the food coordinates into the array   
+        snakeBody.push([snakeX-x2, snakeY -y2]);    //Loads the food coordinates into the array  
+        word_array.length = 0;
+        word_array =  [
+            ['D', 'E', 'L', 'T','A'],
+            ['T','A', 'S', 'K'],
+            ['W', 'E', 'B', 'D','E','V'],
+            ['S', 'Y','S','A','D'],
+            ['A','P','P','D','E','V']
+        ];
         spawn_colors();
         spawnFood();
         gameOver = false; 
@@ -93,8 +102,8 @@ function getRandomInt(max) {
 const spawn_colors = () =>{
     color_sequence.length =0;
     let i = getRandomInt(4);
-    for(let j =0; j < colorArray[i].length; j++){
-        color_sequence.push(colorArray[i][j]);
+    for(let j =0; j < word_array[i].length; j++){
+        color_sequence.push(word_array[i][j]);
     }
 }
 
@@ -251,14 +260,19 @@ const initGame = () => {
     htmlMarkup = "";
     //Spawning food every iteration
     for(let i =0; i < food.length; i++){
-        htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; background-color: #${color_sequence[i]} "> </div>`;
+        if(i ===0){
+            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; text-align:center;font-size: large;font-weight:bold"> ${color_sequence[i]} </div>`;
+        }else{
+            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; text-align:center;font-size: medium;"> ${color_sequence[i]} </div>`;
+        }
+        
     } 
     playBoard.innerHTML = htmlMarkup;
     
     //Showing the color sequence
     let color_markup = "";
     for(let i =0 ; i < color_sequence.length; i++){
-        color_markup += `<div style ="color_blocks; background-color: #${color_sequence[i]}; color: #${color_sequence[i]}">Text</div>`;
+        color_markup += `<div style ="color_blocks; color: #00F0FF; text-align:center" >${color_sequence[i]}</div>`;
     }
     sequence.innerHTML = color_markup;
     
@@ -275,7 +289,8 @@ const initGame = () => {
             gameOver = true;
             handleGameOver();
         }
-
+        
+        audio_eatfood.play();
 
         food.splice(index,1)
         color_sequence.splice(index,1);   //Remove food from array
