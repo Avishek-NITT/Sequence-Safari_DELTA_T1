@@ -20,6 +20,7 @@ let gameStart = 0;
 let timerId;
 let htmlMarkup = "";
 let lives =3;
+let speed = 125;
 let colorArray = [
     ['FF0000', '000CFF', '7C00FF' , 'FF8B00'],
     ['00FFE8', 'FFEC00', '32FF00', 'FF0000'],
@@ -27,7 +28,7 @@ let colorArray = [
     ['000CFF', 'FF00F0', 'FF8B00', '32FF00', 'FF0000'],
     ['32FF00', '7C00FF', 'FFEC00']
 ];
-
+let game_pause = 0;
 let color_sequence = [];
 
 let highScore = localStorage.getItem("high-score") || 0;
@@ -63,10 +64,8 @@ const handleGameOver = () => {
         gameOver = false; 
         livesElement.innerText = `LIVES : ${lives}`;
         timerId = setInterval(countDown,1000)
-        setIntervalID = setInterval(initGame,125);
-        console.log(`${lives}Lives Remaining `);
+        setIntervalID = setInterval(initGame,speed);
     }else{
-        console.log(`Game end`)
         clearInterval(setIntervalID);
         clearInterval(timerId);
         alert("GAME OVERR!!!");
@@ -131,12 +130,31 @@ const spawnFood= () => {
           
 }
 
+const pausegame = () => {
+    clearInterval(timerId);
+    clearInterval(setIntervalID);
+    game_pause =1;
+}
+const unpausegame = () => {
+    timerId = setInterval(countDown,1000)
+    setIntervalID = setInterval(initGame,speed);
+    game_pause =0;
+}
 
 const changeDirection = (e) =>{
     let x1 =1;
     let x2= 2;
     let y1 =0;
     let y2 =0;
+
+    if(e.key === 'p'){
+        if(game_pause === 0){
+            pausegame();
+        }else{
+            unpausegame();
+        }
+        
+    }
     if (e.key === "ArrowUp" && velocityY!= 1){
         velocityX =0;
         velocityY = -1;
@@ -178,7 +196,7 @@ const changeDirection = (e) =>{
         spawn_colors();
         spawnFood();     
         timerId = setInterval(countDown,1000)
-        setIntervalID = setInterval(initGame,125);
+        setIntervalID = setInterval(initGame,speed);
     
     }
 }
@@ -220,7 +238,7 @@ const button_changeDirection = (a) =>{
         spawn_colors();
         spawnFood();   
         timerId = setInterval(countDown,1000)
-        setIntervalID = setInterval(initGame,125);
+        setIntervalID = setInterval(initGame,speed);
     }   
 }
 
