@@ -30,7 +30,7 @@ let word_array = [
 ];
 let game_pause = 0;
 let color_sequence = [];
-let audio_eatfood = new Audio("Audio/Eat_food.mp3");
+let audio_eatfood = new Audio("Audio/eat-food_DcmYIN6Y.mp3");
 let grow = 0;
 let highScore = localStorage.getItem("high-score") || 0;
 highScoreElement.innerText = `High Score = ${highScore}`;
@@ -266,9 +266,9 @@ const initGame = () => {
     //Spawning food every iteration
     for(let i =0; i < food.length; i++){
         if(i ===0){
-            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; text-align:center;font-size: large;font-weight:bold"> ${color_sequence[i]} </div>`;
+            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; text-align:center;font-size: 100%;font-weight:bold"> ${color_sequence[i]} </div>`;
         }else{
-            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; text-align:center;font-size: medium;"> ${color_sequence[i]} </div>`;
+            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; text-align:center;font-size: 80%;"> ${color_sequence[i]} </div>`;
         }
         
     } 

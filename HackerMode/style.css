@@ -98,7 +98,7 @@ body{
     font-family: 'Lato', sans-serif;    
     text-align: center;
     width: 100%;
-    height: 40%;
+    height: 25%;
     
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
     backdrop-filter: blur(10px);
@@ -141,11 +141,8 @@ body{
   
   
   .color_seq{
-    height: 15vmin;
+    height: 6%;
     background-color: black;
-    border-width: 2vmin;
-    border-style:groove;
-    border-color: rgb(88, 77, 77);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -159,8 +156,7 @@ body{
   }
 
   .lives{
-    height: 10vmin;
-    padding: 3%;
+    height: 14%;
     text-align: center;
     font-size: xx-large;
     font-family: life_font;
