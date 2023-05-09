@@ -2,6 +2,22 @@
     font-family: font_heading;
     src: url(Font/TheBomb-7B9gw.ttf);
 }
+@font-face {
+    font-family: font_details;
+    src: url(Font/zero\ hour.otf);
+}
+
+@keyframes blink-text {
+    0% {
+     opacity: 0;
+    }
+    50% {
+     opacity: 1;
+    }
+    100% {
+     opacity: 0;
+    }
+}
 
 
 *{
@@ -18,51 +34,59 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    padding-right: 2%;
 }
 body{
-    background-image: linear-gradient(to right, #8e2de2, #4a00e0);
+    /* background-image: linear-gradient(to right, #8e2de2, #4a00e0); */
+    background-color: #181825;
     background-size: cover;
-    
     background-position:50% 50%;
+    
     display: flex;
     align-items: top;
     justify-content: center;
     min-height: 95vh;
 }
 .game-name{
-    color: rgba(65, 230, 255, 0.818);
+    background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
     text-align: center;
+    animation: blink-text 1.5s linear infinite;
     font-family: font_heading;
     font-size: large;
 }
 .game-details{
     border-radius: 8%;
+    font-family: font_details;
     font-weight: 50; 
-    font-size: 1.2rem;
+    font-size: 1rem;
     padding: 20px 27px;
-    color: white;
+    color: #6e7888;
     display: flex;
     justify-content: space-between;
-    background-color: rgb(36, 5, 57);
+    background-color: #181825;
 }
 .timer{
-    color: red;
+    color: #6e7888;
 }
 
 .playground{
-    background-color: rgb(143, 255, 161);
+    background-color: #222738;
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-columns: repeat(20,1fr);
     grid-template-rows: repeat(20,1fr);
-
+    
+    border-style:groove;
+    border-color: rgb(88, 77, 77);
 
     
 }
 
 .food{
-    background: red;
+    border-radius: 50%;
 }
 
 .head{
@@ -71,6 +95,7 @@ body{
 
 .snake_body{
     background: green;
+    
 }
 
 .buttons{
@@ -150,7 +175,7 @@ body{
   }
 
   .color_blocks{
-    padding: 20%;
+    margin: 10%;
     
   }
 

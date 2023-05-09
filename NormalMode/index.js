@@ -30,8 +30,8 @@ let color_sequence = [];
 
 let highScore = localStorage.getItem("high-score") || 0;
 highScoreElement.innerText = `High Score = ${highScore}`;
-
-timerElement.innerText = `TIMER = ${currentTime}`;
+scoreElement.innerText = `Score = ${score}`;
+timerElement.innerText = `|  TIMER = ${currentTime}  |`;
 
 
 
@@ -46,7 +46,7 @@ const handleGameOver = () => {
 
 function countDown(){
     currentTime --;
-    timerElement.innerText = `TIMER = ${currentTime}`; 
+    timerElement.innerText = `|  TIMER = ${currentTime}  |`; 
     if(currentTime === 0){
         clearInterval(timerId);
         clearInterval(setIntervalID);
@@ -201,14 +201,14 @@ const initGame = () => {
     htmlMarkup = "";
     //Spawning food every iteration
     for(let i =0; i < food.length; i++){
-        htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; background-color: #${color_sequence[i]} "> </div>`;
+        htmlMarkup+=`<div class= "food" style="grid-area: ${food[i][1]}/ ${food[i][0]}; background-color: #${color_sequence[i]} "> </div>`;
     } 
     playBoard.innerHTML = htmlMarkup;
     
     //Showing the color sequence
     let color_markup = "";
     for(let i =0 ; i < color_sequence.length; i++){
-        color_markup += `<div style ="color_blocks; background-color: #${color_sequence[i]}; color: #${color_sequence[i]}">Text</div>`;
+        color_markup += `<div class="food" style ="color_blocks; background-color: #${color_sequence[i]}; color: #${color_sequence[i]}">Text</div>`;
     }
     sequence.innerHTML = color_markup;
     
@@ -267,8 +267,20 @@ const initGame = () => {
         gameOver = true;
         handleGameOver();
     }
-
-    htmlMarkup += `<div class ="head" style="grid-area: ${snakeBody[0][1]}/ ${snakeBody[0][0]}"> </div>`;
+    if(velocityX === 0){
+        if(velocityY===1){
+            htmlMarkup += `<div class ="head" style="grid-area: ${snakeBody[0][1]}/ ${snakeBody[0][0]};border-radius: 53% 47% 49% 51% / 4% 4% 96% 96%;"> </div>`;
+        }else{
+            htmlMarkup += `<div class ="head" style="grid-area: ${snakeBody[0][1]}/ ${snakeBody[0][0]}; border-radius: 53% 47% 49% 51% / 96% 97% 3% 4%;"> </div>`;
+        }
+    }else if(velocityX === 1){
+        htmlMarkup += `<div class ="head" style="grid-area: ${snakeBody[0][1]}/ ${snakeBody[0][0]}; border-radius: 14% 86% 85% 15% / 49% 51% 49% 51%;"> </div>`;
+    }else{
+        htmlMarkup += `<div class ="head" style="grid-area: ${snakeBody[0][1]}/ ${snakeBody[0][0]}; border-radius: 95% 5% 5% 95% / 48% 48% 52% 52%"> </div>`;
+    }
+        
+    
+    
 
     //Updating the snake array on the grid
     for(let i =1; i < snakeBody.length; i++){
