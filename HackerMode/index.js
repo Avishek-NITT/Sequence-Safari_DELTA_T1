@@ -60,6 +60,7 @@ const handleGameOver = () => {
         food.length =0;
         snakeX = 10;
         snakeY = 10;
+        currentTime = 15;
         snakeBody[0] = [snakeX,snakeY];
         snakeBody.push([snakeX-x1, snakeY-y1]);
         snakeBody.push([snakeX-x2, snakeY -y2]);    //Loads the food coordinates into the array  
