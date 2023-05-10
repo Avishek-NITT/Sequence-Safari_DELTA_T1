@@ -45,7 +45,8 @@ livesElement.innerText = `LIVES : ${lives}`;
 
 const handleGameOver = () => {
     lives--;
-    if(lives){
+    if(lives){  //Checks how many lives user has
+        // If user still has lives, everything except score is resetted and the game restarts
         clearInterval(setIntervalID);
         clearInterval(timerId);
         let x1 =1;
@@ -81,6 +82,7 @@ const handleGameOver = () => {
         timerId = setInterval(countDown,1000)
         setIntervalID = setInterval(initGame,speed);
     }else{
+        //If no lives remaining, game ends with an alert
         clearInterval(setIntervalID);
         clearInterval(timerId);
         alert("GAME OVERR!!!");
@@ -90,7 +92,7 @@ const handleGameOver = () => {
 
 }
 
-function countDown(){
+function countDown(){  // Implementing a countdown timer
     currentTime --;
     timerElement.innerText = `TIMER = ${currentTime}`; 
     if(currentTime === 0){
@@ -101,20 +103,20 @@ function countDown(){
 }
 
 
-function getRandomInt(max) {
+function getRandomInt(max) { //Used to fetch myself any random number
     return Math.floor(Math.random() * max);
 }
 
-const spawn_colors = () =>{
+const spawn_colors = () =>{     //Picks a sequence from word_array and then adds the sequence in color_sequence
     color_sequence.length =0;
-    let i = getRandomInt(4);
+    let i = getRandomInt(word_array.length -1);
     for(let j =0; j < word_array[i].length; j++){
         color_sequence.push(word_array[i][j]);
     }
 }
 
 
-const spawnFood= () => {
+const spawnFood= () => {        //Once a sequence is selected, this function spawns it on the grid
     let cond = 0;
     for(let i =0; i < color_sequence.length; i++){
         cond =1;
@@ -145,6 +147,7 @@ const spawnFood= () => {
           
 }
 
+//Pause is implemented by pressing 'p' key
 const pausegame = () => {
     clearInterval(timerId);
     clearInterval(setIntervalID);
@@ -156,6 +159,7 @@ const unpausegame = () => {
     game_pause =0;
 }
 
+//Used to change the direction of the snake
 const changeDirection = (e) =>{
     let x1 =1;
     let x2= 2;
@@ -202,8 +206,8 @@ const changeDirection = (e) =>{
             gameStart++;
         }
     }
-    
-    if(gameStart===1){   //Game starts here
+    //This function allows user to start the game by pressing any arrow key
+    if(gameStart===1){   
         gameStart++;
         snakeBody[0] = [snakeX,snakeY];
         snakeBody.push([snakeX-x1, snakeY-y1]);
@@ -216,6 +220,7 @@ const changeDirection = (e) =>{
     }
 }
 
+//Changing directions using buttons
 const button_changeDirection = (a) =>{
     let x1 =1;
     let x2= 2;
@@ -257,8 +262,9 @@ const button_changeDirection = (a) =>{
     }   
 }
 
+//Implementing powerup
 const powerup = () => {
-    let d = getRandomInt(20);
+    let d = getRandomInt(20); //This decides whether a powerup will be spawned or not
     if(d > 5 && d < 12){
         let cond =1;
         while(cond){
@@ -286,6 +292,7 @@ const powerup = () => {
     
 } 
 
+//Main game function starts here
 const initGame = () => {
 
     if (gameOver) return handleGameOver();
@@ -383,7 +390,7 @@ const initGame = () => {
     
     }
 
-    if(food.length===0){
+    if(food.length===0){ //If user completes a sequence of food
         currentTime += 5;
         grow = 3;
         powerup_exist = 0;
@@ -428,15 +435,6 @@ const initGame = () => {
 
 }
 
-
-
-
-// grid_x = prompt("Enter grid width");
-// grid_y = prompt("Enter grid height");
-
-// htmlMarkup += `<div class="playground" style = "grid-template-columns: repeat(grid_x,1fr);grid-template-rows: repeat(grid_y,1fr);"></div> `;
-
-// playBoard.innerHTML = htmlMarkup;
 document.addEventListener("keydown", changeDirection);
 
 
