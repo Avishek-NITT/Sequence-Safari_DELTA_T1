@@ -105,6 +105,7 @@ const changeDirection = (e) =>{
     let x2= 2;
     let y1 =0;
     let y2 =0;
+
     if (e.key === "ArrowUp" && velocityY!= 1){
         velocityX =0;
         velocityY = -1;

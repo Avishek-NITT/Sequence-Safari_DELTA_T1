@@ -5,6 +5,7 @@ const highScoreElement = document.querySelector(".high-score")
 const timerElement = document.querySelector(".timer")
 const livesElement = document.querySelector(".lives")
 
+let grid_x =20, grid_y = 20;
 let gameOver = false;
 let foodX, foodY;
 let snakeBody = [];
@@ -22,7 +23,7 @@ let gameStart = 0;
 let timerId;
 let htmlMarkup = "";
 let lives =3;
-let speed = 125;
+let speed = 180;
 let word_array = [
     ['D', 'E', 'L', 'T','A'],
     ['T','A', 'S', 'K'],
@@ -76,6 +77,7 @@ const handleGameOver = () => {
         spawnFood();
         gameOver = false; 
         livesElement.innerText = `LIVES : ${lives}`;
+        speed = 180;
         timerId = setInterval(countDown,1000)
         setIntervalID = setInterval(initGame,speed);
     }else{
@@ -116,8 +118,8 @@ const spawnFood= () => {
     let cond = 0;
     for(let i =0; i < color_sequence.length; i++){
         cond =1;
-        foodX = Math.floor(Math.random() * 20)+1;
-        foodY = Math.floor(Math.random() * 20)+1;
+        foodX = Math.floor(Math.random() * grid_x)+1;
+        foodY = Math.floor(Math.random() * grid_y)+1;
         //Checking if the new food spawn doesnt collide with snake body or other foods
         for(let j=0; j < snakeBody.length; j++){
             if (snakeBody[j][0] !== foodX && snakeBody[j][1] !== foodY ){
@@ -261,8 +263,8 @@ const powerup = () => {
         let cond =1;
         while(cond){
             cond =0;
-            power_x =getRandomInt(20)
-            power_y = getRandomInt(20)
+            power_x =getRandomInt(grid_x)
+            power_y = getRandomInt(grid_y)
             for(let i =0; i < food.length; i++){
                 if(JSON.stringify(power_x) === JSON.stringify(food[i][0]) && JSON.stringify(power_y) === JSON.stringify(food[i][1])){
                     cond =1;
@@ -325,9 +327,10 @@ const initGame = () => {
     }
 
     //Checking if snake ate a powerup
-    if(snakeX===power_x && snakeY === power_y){
+    if(powerup_exist && snakeX===power_x && snakeY === power_y ){
         powerup_exist =0;
         currentTime +=2;
+        audio_eatfood.play();
         let count =3;
         while(count && snakeBody.length>3){
             snakeBody.pop();
@@ -344,7 +347,22 @@ const initGame = () => {
         
         audio_eatfood.play();
         
-
+        if(speed > 150){
+            speed -= 10;
+            clearInterval(setIntervalID);
+            setIntervalID = setInterval(initGame,speed);
+        }
+        else if(speed > 120){
+            speed -= 7;
+            clearInterval(setIntervalID);
+            setIntervalID = setInterval(initGame,speed);
+        }
+        else if(speed >90){
+            speed -=5;
+            clearInterval(setIntervalID);
+            setIntervalID = setInterval(initGame,speed);
+        }
+        console.log(speed);
         food.splice(index,1)
         color_sequence.splice(index,1);   //Remove food from array
         snakeBody.push([snakeX, snakeY]);  //Snake body grows at the position of the food
@@ -368,6 +386,7 @@ const initGame = () => {
     if(food.length===0){
         currentTime += 5;
         grow = 3;
+        powerup_exist = 0;
         spawn_colors();
         spawnFood();
         for(let i =0; i < food.length; i++){
@@ -388,7 +407,7 @@ const initGame = () => {
     snakeBody[0] = [snakeX,snakeY];
     
     //If snake crashes into a wall
-    if(snakeX < 0 || snakeX >20 || snakeY < 0 || snakeY > 20){
+    if(snakeX < 0 || snakeX >grid_x || snakeY < 0 || snakeY > grid_y){
         gameOver = true;
         handleGameOver();
     }
@@ -410,10 +429,14 @@ const initGame = () => {
 }
 
 
-// htmlMarkup+=`<div style="grid-area: 4/5; background-color: #FF0000;" > </div>`;
+
+
+// grid_x = prompt("Enter grid width");
+// grid_y = prompt("Enter grid height");
+
+// htmlMarkup += `<div class="playground" style = "grid-template-columns: repeat(grid_x,1fr);grid-template-rows: repeat(grid_y,1fr);"></div> `;
+
 // playBoard.innerHTML = htmlMarkup;
-
-
 document.addEventListener("keydown", changeDirection);
 
 
