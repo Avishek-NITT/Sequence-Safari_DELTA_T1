@@ -5,10 +5,13 @@ const highScoreElement = document.querySelector(".high-score")
 const timerElement = document.querySelector(".timer")
 const livesElement = document.querySelector(".lives")
 
+let grid_x =20, grid_y = 20;
 let gameOver = false;
 let foodX, foodY;
 let snakeBody = [];
 let food = [];
+let powerup_exist =0;
+let power_x, power_y;
 let snakeX = 10, snakeY = 10;
 let velocityX = 0, velocityY =0;
 let setIntervalID;
@@ -20,7 +23,7 @@ let gameStart = 0;
 let timerId;
 let htmlMarkup = "";
 let lives =3;
-let speed = 125;
+let speed = 180;
 let word_array = [
     ['D', 'E', 'L', 'T','A'],
     ['T','A', 'S', 'K'],
@@ -32,6 +35,10 @@ let game_pause = 0;
 let color_sequence = [];
 let audio_eatfood = new Audio("Audio/eat-food_DcmYIN6Y.mp3");
 let grow = 0;
+let t1_x,t1_y;
+let t2_x, t2_y;
+
+
 let highScore = localStorage.getItem("high-score") || 0;
 highScoreElement.innerText = `High Score = ${highScore}`;
 
@@ -42,7 +49,8 @@ livesElement.innerText = `LIVES : ${lives}`;
 
 const handleGameOver = () => {
     lives--;
-    if(lives){
+    if(lives){  //Checks how many lives user has
+        // If user still has lives, everything except score is resetted and the game restarts
         clearInterval(setIntervalID);
         clearInterval(timerId);
         let x1 =1;
@@ -51,12 +59,14 @@ const handleGameOver = () => {
         let y2 =0;
         velocityX =1;
         velocityY = 0;
+        powerup_exist =0;
         htmlMarkup ="";
         playBoard.innerHTML = htmlMarkup;
         snakeBody.length =0;
         food.length =0;
         snakeX = 10;
         snakeY = 10;
+        currentTime = 15;
         snakeBody[0] = [snakeX,snakeY];
         snakeBody.push([snakeX-x1, snakeY-y1]);
         snakeBody.push([snakeX-x2, snakeY -y2]);    //Loads the food coordinates into the array  
@@ -72,9 +82,12 @@ const handleGameOver = () => {
         spawnFood();
         gameOver = false; 
         livesElement.innerText = `LIVES : ${lives}`;
+        speed = 180;
+        spawn_teleport();
         timerId = setInterval(countDown,1000)
         setIntervalID = setInterval(initGame,speed);
     }else{
+        //If no lives remaining, game ends with an alert
         clearInterval(setIntervalID);
         clearInterval(timerId);
         alert("GAME OVERR!!!");
@@ -84,7 +97,7 @@ const handleGameOver = () => {
 
 }
 
-function countDown(){
+function countDown(){  // Implementing a countdown timer
     currentTime --;
     timerElement.innerText = `TIMER = ${currentTime}`; 
     if(currentTime === 0){
@@ -95,25 +108,25 @@ function countDown(){
 }
 
 
-function getRandomInt(max) {
+function getRandomInt(max) { //Used to fetch myself any random number
     return Math.floor(Math.random() * max);
 }
 
-const spawn_colors = () =>{
+const spawn_colors = () =>{     //Picks a sequence from word_array and then adds the sequence in color_sequence
     color_sequence.length =0;
-    let i = getRandomInt(4);
+    let i = getRandomInt(word_array.length -1);
     for(let j =0; j < word_array[i].length; j++){
         color_sequence.push(word_array[i][j]);
     }
 }
 
 
-const spawnFood= () => {
+const spawnFood= () => {        //Once a sequence is selected, this function spawns it on the grid
     let cond = 0;
     for(let i =0; i < color_sequence.length; i++){
         cond =1;
-        foodX = Math.floor(Math.random() * 20)+1;
-        foodY = Math.floor(Math.random() * 20)+1;
+        foodX = Math.floor(Math.random() * grid_x)+1;
+        foodY = Math.floor(Math.random() * grid_y)+1;
         //Checking if the new food spawn doesnt collide with snake body or other foods
         for(let j=0; j < snakeBody.length; j++){
             if (snakeBody[j][0] !== foodX && snakeBody[j][1] !== foodY ){
@@ -139,6 +152,7 @@ const spawnFood= () => {
           
 }
 
+//Pause is implemented by pressing 'p' key
 const pausegame = () => {
     clearInterval(timerId);
     clearInterval(setIntervalID);
@@ -150,17 +164,12 @@ const unpausegame = () => {
     game_pause =0;
 }
 
+//Used to change the direction of the snake
 const changeDirection = (e) =>{
     let x1 =1;
     let x2= 2;
     let y1 =0;
     let y2 =0;
-
-
-    if(e.key ==='k'){
-        snakeX = 17;
-        snakeY = 3;
-    }
 
     if(e.key === 'p'){
         if(game_pause === 0){
@@ -202,20 +211,22 @@ const changeDirection = (e) =>{
             gameStart++;
         }
     }
-    
-    if(gameStart===1){   //Game starts here
+    //This function allows user to start the game by pressing any arrow key
+    if(gameStart===1){   
         gameStart++;
         snakeBody[0] = [snakeX,snakeY];
         snakeBody.push([snakeX-x1, snakeY-y1]);
         snakeBody.push([snakeX-x2, snakeY -y2]);    //Loads the food coordinates into the array   
         spawn_colors();
-        spawnFood();     
+        spawnFood();
+        spawn_teleport();     
         timerId = setInterval(countDown,1000)
         setIntervalID = setInterval(initGame,speed);
     
     }
 }
 
+//Changing directions using buttons
 const button_changeDirection = (a) =>{
     let x1 =1;
     let x2= 2;
@@ -257,8 +268,77 @@ const button_changeDirection = (a) =>{
     }   
 }
 
+//Implementing powerup
+const powerup = () => {
+    let d = getRandomInt(20); //This decides whether a powerup will be spawned or not
+    if(d > 5 && d < 12){
+        let cond =1;
+        while(cond){
+            cond =0;
+            power_x =getRandomInt(grid_x)
+            power_y = getRandomInt(grid_y)
+            for(let i =0; i < food.length; i++){
+                if(JSON.stringify(power_x) === JSON.stringify(food[i][0]) && JSON.stringify(power_y) === JSON.stringify(food[i][1])){
+                    cond =1;
+                    break;
+                }
+            }
+            for(let i =0; i < snakeBody.length; i++){
+                if(JSON.stringify(power_x) === JSON.stringify(snakeBody[i][0]) && JSON.stringify(power_y) === JSON.stringify(snakeBody[i][1])){
+                    cond =1;
+                    break;
+                }
+            }
+        }
+        htmlMarkup += `<div class ="buff_shrink" style ="grid-area: ${power_y}/${power_x}">P1</div> `
+        playBoard.innerHTML = htmlMarkup;
+
+        powerup_exist=1;
+    }
+    
+} 
+
+//Spawning teleport at the start of a game;
+
+const spawn_teleport = () => {
+    let cond =1;
+    while (cond){
+        cond = 1;
+        while(cond){
+            cond =0;
+            t1_x = getRandomInt(grid_x);
+            t1_y = getRandomInt(grid_y);
+            t2_x = getRandomInt(grid_x);
+            t2_y = getRandomInt(grid_y);
+            for(let i =0; i < food.length; i++){
+                if(JSON.stringify(t1_x) === JSON.stringify(food[i][0]) && JSON.stringify(t1_y) === JSON.stringify(food[i][1])){
+                    cond =1;
+                    break;
+                }else if (JSON.stringify(t2_x) === JSON.stringify(food[i][0]) && JSON.stringify(t2_y) === JSON.stringify(food[i][1])){
+                    cond =1;
+                    break;
+                }
+            }
+            for(let i =0; i < snakeBody.length; i++){
+                if(JSON.stringify(t1_x) === JSON.stringify(snakeBody[i][0]) && JSON.stringify(t1_y) === JSON.stringify(snakeBody[i][1])){
+                    cond =1;
+                    break;
+                }else if(JSON.stringify(t2_x) === JSON.stringify(snakeBody[i][0]) && JSON.stringify(t2_y) === JSON.stringify(snakeBody[i][1])){
+                    cond =1;
+                    break;
+                }
+            }
+            if(t1_x === t2_x && t1_y === t2_y){
+                cond =1;
+            }
+        }
+    }
+    
+}
 
 
+
+//Main game function starts here
 const initGame = () => {
 
     if (gameOver) return handleGameOver();
@@ -269,6 +349,18 @@ const initGame = () => {
     }
 
     htmlMarkup = "";
+    
+
+    //Adding teleport icons
+    htmlMarkup += `<div class ="teleport_icon" style ="grid-area: ${t1_y}/${t1_x}">T1</div> `;
+    htmlMarkup += `<div class ="teleport_icon" style ="grid-area: ${t2_y}/${t2_x}">T2</div> `;
+
+    playBoard.innerHTML = htmlMarkup;
+
+    if(powerup_exist){
+        htmlMarkup += `<div class ="buff_shrink" style ="grid-area: ${power_y}/${power_x}">P1</div> `
+        playBoard.innerHTML = htmlMarkup;
+    }
     //Spawning food every iteration
     for(let i =0; i < food.length; i++){
         if(i ===0){
@@ -280,6 +372,15 @@ const initGame = () => {
     } 
     playBoard.innerHTML = htmlMarkup;
     
+    //Checking if snake goes into a telport;
+    if(snakeX === t1_x && snakeY === t1_y){
+        snakeX = t2_x;
+        snakeY = t2_y;
+    }else if(snakeX === t2_x && snakeY === t2_y){
+        snakeX =t1_x;
+        snakeY =t1_y;
+    }
+
     //Showing the color sequence
     let color_markup = "";
     for(let i =0 ; i < color_sequence.length; i++){
@@ -294,6 +395,19 @@ const initGame = () => {
             index = i;
         }
     }
+
+    //Checking if snake ate a powerup
+    if(powerup_exist && snakeX===power_x && snakeY === power_y ){
+        powerup_exist =0;
+        currentTime +=2;
+        audio_eatfood.play();
+        let count =3;
+        while(count && snakeBody.length>3){
+            snakeBody.pop();
+            count--;
+        }
+    }
+
     //If eaten, then it will remove it from food array and grow the snake 
     if(food_eaten){ 
         if(index!==0){
@@ -303,7 +417,22 @@ const initGame = () => {
         
         audio_eatfood.play();
         
-
+        if(speed > 150){
+            speed -= 10;
+            clearInterval(setIntervalID);
+            setIntervalID = setInterval(initGame,speed);
+        }
+        else if(speed > 120){
+            speed -= 7;
+            clearInterval(setIntervalID);
+            setIntervalID = setInterval(initGame,speed);
+        }
+        else if(speed >90){
+            speed -=5;
+            clearInterval(setIntervalID);
+            setIntervalID = setInterval(initGame,speed);
+        }
+        console.log(speed);
         food.splice(index,1)
         color_sequence.splice(index,1);   //Remove food from array
         snakeBody.push([snakeX, snakeY]);  //Snake body grows at the position of the food
@@ -316,12 +445,18 @@ const initGame = () => {
         scoreElement.innerText = `Score = ${score}`;
         highScoreElement.innerText = `High Score = ${highScore}`;
         food_eaten=0;
+
+        //Checking if powerup is spawned or not
+        if(powerup_exist === 0){
+            powerup();
+        }
     
     }
 
-    if(food.length===0){
+    if(food.length===0){ //If user completes a sequence of food
         currentTime += 5;
         grow = 3;
+        powerup_exist = 0;
         spawn_colors();
         spawnFood();
         for(let i =0; i < food.length; i++){
@@ -342,7 +477,7 @@ const initGame = () => {
     snakeBody[0] = [snakeX,snakeY];
     
     //If snake crashes into a wall
-    if(snakeX < 0 || snakeX >20 || snakeY < 0 || snakeY > 20){
+    if(snakeX < 0 || snakeX >grid_x || snakeY < 0 || snakeY > grid_y){
         gameOver = true;
         handleGameOver();
     }
@@ -362,11 +497,6 @@ const initGame = () => {
     playBoard.innerHTML = htmlMarkup;
 
 }
-
-
-// htmlMarkup+=`<div style="grid-area: 4/5; background-color: #FF0000;" > </div>`;
-// playBoard.innerHTML = htmlMarkup;
-
 
 document.addEventListener("keydown", changeDirection);
 
