@@ -180,6 +180,12 @@ body{
 }   
 
   
-  
+.obstacle_icon{
+    color: transparent;
+    background-image: url(Pictures/Obstacle.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
   
   

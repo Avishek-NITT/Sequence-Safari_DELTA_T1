@@ -39,10 +39,12 @@ let word_array = [
 let game_pause = 0;
 let color_sequence = [];
 let audio_eatfood = new Audio("Audio/eat-food_DcmYIN6Y.mp3");
+let audio_teleport = new Audio("Audio/Teleport_sound.mp3");
 let grow = 0;
 let t1_x,t1_y;
 let t2_x, t2_y;
-
+let obstacle_exist =0;
+let ob_x =1, ob_y;
 
 let highScore = localStorage.getItem("high-score") || 0;
 highScoreElement.innerText = `High Score = ${highScore}`;
@@ -69,6 +71,8 @@ const handleGameOver = () => {
         powerup_exist =0;
         htmlMarkup ="";
         playBoard.innerHTML = htmlMarkup;
+        obstacle_exist =0;
+        ob_x =1;
         snakeBody1.length =0;
         snakeBody2.length =0;
         food.length =0;
@@ -258,14 +262,18 @@ const changeDirection = (e) =>{
             velocityY1 = 0;
         }
     }
-    else if (e.key === 'd' && velocityX2!= -1){
-        velocityX2 =1;
-        velocityY2 = 0;
+    else if (e.key === 'd' && velocityX2!= -1){        
         if(gameStart===0){
             velocityX1 =1;
             velocityY1 = 0;
+            velocityX2 =0;
+            velocityY2 = -1;
             gameStart++;
+        }else{
+            velocityX2 =1;
+            velocityY2 =0;
         }
+        
     }
     else if (e.key === 'a' && velocityX2!= 1){
         velocityX2 =-1;
@@ -437,6 +445,29 @@ const initGame = () => {
 
     htmlMarkup = "";
     
+    //Deciding whether to throw obstacle
+    if(obstacle_exist ===0 ){
+        let d = getRandomInt(20);
+        if(d > 8 && d < 12){
+            obstacle_exist =1;
+            ob_y = getRandomInt(20);
+            if(ob_y ===0){
+                ob_y =1;
+            }
+        }
+    }
+    //If it is decided to throw obstacle 
+    if(obstacle_exist === 1){
+        if(ob_x === 21){
+            obstacle_exist =0;
+            ob_x =0;
+        }else{
+            htmlMarkup += `<div class ="obstacle_icon" style ="grid-area: ${ob_y}/${ob_x}">O1</div> `;
+            playBoard.innerHTML = htmlMarkup;
+            ob_x++; 
+        }
+    }
+
 
     //Adding teleport icons
     htmlMarkup += `<div class ="teleport_icon" style ="grid-area: ${t1_y}/${t1_x}">T1</div> `;
@@ -477,16 +508,21 @@ const initGame = () => {
     if(snakeX1 === t1_x && snakeY1 === t1_y){
         snakeX1 = t2_x;
         snakeY1 = t2_y;
+        audio_teleport.play();
     }else if(snakeX1 === t2_x && snakeY1 === t2_y){
         snakeX1 =t1_x;
         snakeY1 =t1_y;
+        audio_teleport.play();
     }
     if(snakeX2 === t1_x && snakeY2 === t1_y){
         snakeX2 = t2_x;
         snakeY2 = t2_y;
-    }else if(snakeX2 === t2_x && snakeY2 === t2_y){
+        audio_teleport.play();
+    }
+    else if(snakeX2 === t2_x && snakeY2 === t2_y){
         snakeX2 =t1_x;
         snakeY2 =t1_y;
+        audio_teleport.play();
     }
 
     //Showing the color sequence
@@ -528,6 +564,7 @@ const initGame = () => {
         }
         
         audio_eatfood.play();
+    
         
         if(speed > 150){
             speed -= 10;
@@ -619,7 +656,19 @@ const initGame = () => {
         }
       
     }
-    
+    //Checking if obstacle hit any snake
+    for(let i =0; i < snakeBody1.length ; i++){
+        if(JSON.stringify(ob_x) === JSON.stringify(snakeBody1[i][0]) && JSON.stringify(ob_y) === JSON.stringify(snakeBody1[i][1])){
+            gameOver = true;
+            handleGameOver();
+        }
+    }
+    for(let i =0; i < snakeBody2.length ; i++){
+        if(JSON.stringify(ob_x) === JSON.stringify(snakeBody2[i][0]) && JSON.stringify(ob_y) === JSON.stringify(snakeBody2[i][1])){
+            gameOver = true;
+            handleGameOver();
+        }
+    }
     
     
     
