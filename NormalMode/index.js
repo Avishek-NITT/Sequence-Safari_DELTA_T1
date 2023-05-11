@@ -31,7 +31,7 @@ let color_sequence = [];
 let highScore = localStorage.getItem("high-score") || 0;
 highScoreElement.innerText = `High Score = ${highScore}`;
 scoreElement.innerText = `Score = ${score}`;
-timerElement.innerText = `|  TIMER = ${currentTime}  |`;
+timerElement.innerText = `TIMER = ${currentTime}`;
 
 
 
@@ -46,7 +46,7 @@ const handleGameOver = () => {
 
 function countDown(){
     currentTime --;
-    timerElement.innerText = `|  TIMER = ${currentTime}  |`; 
+    timerElement.innerText = `TIMER = ${currentTime}`; 
     if(currentTime === 0){
         clearInterval(timerId);
         clearInterval(setIntervalID);
@@ -209,7 +209,7 @@ const initGame = () => {
     //Showing the color sequence
     let color_markup = "";
     for(let i =0 ; i < color_sequence.length; i++){
-        color_markup += `<div class="food" style ="color_blocks; background-color: #${color_sequence[i]}; color: #${color_sequence[i]}">Text</div>`;
+        color_markup += `<div class="color_blocks" style ="background-color: #${color_sequence[i]}; color: #${color_sequence[i]}">Text</div>`;
     }
     sequence.innerHTML = color_markup;
     

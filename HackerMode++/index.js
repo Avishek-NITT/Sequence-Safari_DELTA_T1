@@ -482,9 +482,9 @@ const initGame = () => {
     //Spawning food every iteration
     for(let i =0; i < food.length; i++){
         if(i ===0){
-            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; text-align:center;font-size: 100%;font-weight:bold"> ${color_sequence[i]} </div>`;
+            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]};color: #00F0FF; text-align:center;font-size: 100%;font-weight:bold"> ${color_sequence[i]} </div>`;
         }else{
-            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; text-align:center;font-size: 80%;"> ${color_sequence[i]} </div>`;
+            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]};color: #00F0FF; text-align:center;font-size: 80%;"> ${color_sequence[i]} </div>`;
         }
         
     } 
