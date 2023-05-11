@@ -6,6 +6,21 @@
     font-family: life_font;
     src: url(Font/ARCADECLASSIC.TTF);
 }
+@font-face {
+    font-family: font_details;
+    src: url(Font/zero\ hour.otf);
+}
+@keyframes blink-text {
+    0% {
+     opacity: 0;
+    }
+    50% {
+     opacity: 1;
+    }
+    100% {
+     opacity: 0;
+    }
+}
 
 
 *{
@@ -16,17 +31,16 @@
 
 .wrapper{
     
-    width: 75vmin;
-    height: 98vmin;
+    width: 60vw;
+    height: 98vh;
     border-radius: 4%;
-    overflow: hidden;
+    overflow: none;
     display: flex;
     flex-direction: column;
 }
 body{
     background-image: linear-gradient(to right, #8e2de2, #4a00e0);
-    background-size: cover;
-    
+    background-size: cover;    
     background-position:50% 50%;
     display: flex;
     align-items: top;
@@ -37,36 +51,39 @@ body{
     color: rgba(65, 230, 255, 0.818);
     text-align: center;
     font-family: font_heading;
-    font-size: large;
+    animation: blink-text 1.7s linear infinite;
+    font-size: 1.3em;
 }
 .game-details{
-    border-radius: 8%;
+    font-family: font_details;
     font-weight: 50; 
-    font-size: 1.2rem;
-    padding: 20px 27px;
-    color: white;
+    font-size: 1em;
+    width: 100%;
+    height: 5%;
+    color: #6e7888;
     display: flex;
     justify-content: space-between;
-    background-color: rgb(36, 5, 57);
+    background-color: transparent;
 }
 .timer{
-    color: red;
+    color: #6e7888;
 }
 
 .playground{
     background-color: rgb(143, 255, 161);
     width: 100%;
-    height: 100%;
+    height: 67%;
     display: grid;
-    grid-template-columns: repeat(20,1fr);
-    grid-template-rows: repeat(20,1fr);
-
-
-    
+    gap: 0;
+    border-style: solid;
+    border-color: rgb(67, 62, 62);
+    border-width: 2vmin;
+    overflow: none;    
 }
 
 .food{
-    background: red;
+    text-align:center;
+    font-size: 80%;
 }
 
 .head{
@@ -97,8 +114,10 @@ body{
 .keys {
     font-family: 'Lato', sans-serif;    
     text-align: center;
-    width: 100%;
-    height: 25%;
+    width: 20vw;
+    height: 25vh;
+    margin-right: 7vw;
+    margin-top: 37vh;
     
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
     backdrop-filter: blur(10px);
@@ -111,7 +130,7 @@ body{
   
   .arr {
     cursor: pointer;
-    width: 18%;
+    width: 24%;
     height: 40%;
     text-align: center;
     line-height: 90px;
@@ -124,6 +143,9 @@ body{
     border-top: 10px solid darken(grey, 10);  
     display: inline-block;
     margin: 5px;
+    margin-top: 2%;
+    margin-left: 1%;
+    margin-right: 1%;
     transition: all .05s linear;
     &:active {
       border-bottom: 8px solid darken(grey, 20);
@@ -136,29 +158,35 @@ body{
   .up {
     position: relative;
     top: -4px;
-    margin-top: 2%;
+    margin-top: 4%;
   }
   
   
   .color_seq{
-    height: 6%;
+    height: 10%;
+    width: 100%;
+    overflow: none;
     background-color: black;
+    border-width: 2vmin;
+    border-style:groove;
+    border-color: rgb(88, 77, 77);
+    margin-top: 2%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
   }
 
   .color_blocks{
-    padding: 20%;
-    
+   
   }
 
   .lives{
     height: 14%;
+    width: 100%;
     text-align: center;
-    font-size: xx-large;
+    font-size: 3em;
     font-family: life_font;
   }
   
@@ -167,8 +195,7 @@ body{
     color: transparent;
     background-image: url(Pictures/Potion.png);
     background-size: cover;
-    background-position: center;
-  
+    background-position: center;  
 }
 
 

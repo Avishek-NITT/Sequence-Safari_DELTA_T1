@@ -5,7 +5,7 @@ const highScoreElement = document.querySelector(".high-score")
 const timerElement = document.querySelector(".timer")
 const livesElement = document.querySelector(".lives")
 
-let grid_x =20, grid_y = 20;
+let grid_x , grid_y;
 let gameOver = false;
 let foodX, foodY;
 let snakeBody = [];
@@ -310,9 +310,9 @@ const initGame = () => {
     //Spawning food every iteration
     for(let i =0; i < food.length; i++){
         if(i ===0){
-            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; text-align:center;font-size: 100%;font-weight:bold"> ${color_sequence[i]} </div>`;
+            htmlMarkup+=`<div class = "food" style="font-size: 100%;font-weight:bold;grid-area: ${food[i][1]}/ ${food[i][0]}; "> ${color_sequence[i]} </div>`;
         }else{
-            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; text-align:center;font-size: 80%;"> ${color_sequence[i]} </div>`;
+            htmlMarkup+=`<div class = "food" style="grid-area: ${food[i][1]}/ ${food[i][0]};"> ${color_sequence[i]} </div>`;
         }
         
     } 
@@ -321,7 +321,7 @@ const initGame = () => {
     //Showing the color sequence
     let color_markup = "";
     for(let i =0 ; i < color_sequence.length; i++){
-        color_markup += `<div style ="color_blocks; color: #00F0FF; text-align:center" >${color_sequence[i]}</div>`;
+        color_markup += `<div class="color_blocks" style ="color: #00F0FF" >${color_sequence[i]}</div>`;
     }
     sequence.innerHTML = color_markup;
     
@@ -395,11 +395,7 @@ const initGame = () => {
         grow = 3;
         powerup_exist = 0;
         spawn_colors();
-        spawnFood();
-        for(let i =0; i < food.length; i++){
-            htmlMarkup+=`<div style="grid-area: ${food[i][1]}/ ${food[i][0]}; background-color: #${color_sequence[i]} "> </div>`;
-        }
-      
+        spawnFood();     
     }
     
     
@@ -434,6 +430,11 @@ const initGame = () => {
     playBoard.innerHTML = htmlMarkup;
 
 }
+
+grid_x = prompt("Enter width");
+grid_y = prompt("Enter height");
+playBoard.style.gridTemplateColumns = `repeat(${grid_x}, 1fr)`
+playBoard.style.gridTemplateRows = `repeat(${grid_y}, 1fr)`
 
 document.addEventListener("keydown", changeDirection);
 
