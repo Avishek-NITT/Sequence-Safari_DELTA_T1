@@ -8,15 +8,20 @@ const livesElement = document.querySelector(".lives")
 let grid_x =20, grid_y = 20;
 let gameOver = false;
 let foodX, foodY;
-let snakeBody = [];
+let snakeBody1 = [];
+let snakeBody2 = [];
 let food = [];
 let powerup_exist =0;
 let power_x, power_y;
-let snakeX = 10, snakeY = 10;
-let velocityX = 0, velocityY =0;
+let snakeX1 = 3, snakeY1 = 3;
+let snakeX2 = 17, snakeY2 = 17;
+let velocityX1 = 0, velocityY1 =0;
+let velocityX2 = 0, velocityY2 =0;
 let setIntervalID;
-let score = 0;
-let food_eaten =0;
+let score1 = 0;
+let score2 = 0;
+let food_eaten1 =0;
+let food_eaten2 =0;
 let index;
 let currentTime = 15;
 let gameStart = 0;
@@ -57,19 +62,28 @@ const handleGameOver = () => {
         let x2= 2;
         let y1 =0;
         let y2 =0;
-        velocityX =1;
-        velocityY = 0;
+        velocityX1 =1;
+        velocityY1 = 0;
+        velocityX2 =-1;
+        velocityY2 = 0;
         powerup_exist =0;
         htmlMarkup ="";
         playBoard.innerHTML = htmlMarkup;
-        snakeBody.length =0;
+        snakeBody1.length =0;
+        snakeBody2.length =0;
         food.length =0;
-        snakeX = 10;
-        snakeY = 10;
+        snakeX1 = 3;
+        snakeY1 = 3;
+        snakeX2 = 17;
+        snakeY2 = 17;
         currentTime = 15;
-        snakeBody[0] = [snakeX,snakeY];
-        snakeBody.push([snakeX-x1, snakeY-y1]);
-        snakeBody.push([snakeX-x2, snakeY -y2]);    //Loads the food coordinates into the array  
+        snakeBody1[0] = [snakeX1,snakeY1];
+        snakeBody1.push([snakeX1-x1, snakeY1-y1]);
+        snakeBody1.push([snakeX1-x2, snakeY1 -y2]);    //Loads the food coordinates into the array
+
+        snakeBody2[0] = [snakeX2,snakeY2];
+        snakeBody2.push([snakeX2+x1, snakeY2-y1]);
+        snakeBody2.push([snakeX2+x2, snakeY2 -y2]);  
         word_array.length = 0;
         word_array =  [
             ['D', 'E', 'L', 'T','A'],
@@ -128,8 +142,15 @@ const spawnFood= () => {        //Once a sequence is selected, this function spa
         foodX = Math.floor(Math.random() * grid_x)+1;
         foodY = Math.floor(Math.random() * grid_y)+1;
         //Checking if the new food spawn doesnt collide with snake body or other foods
-        for(let j=0; j < snakeBody.length; j++){
-            if (snakeBody[j][0] !== foodX && snakeBody[j][1] !== foodY ){
+        for(let j=0; j < snakeBody1.length; j++){
+            if (snakeBody1[j][0] !== foodX && snakeBody1[j][1] !== foodY ){
+                continue;
+            }else{
+                cond = 0;
+            }
+        }
+        for(let j=0; j < snakeBody2.length; j++){
+            if (snakeBody2[j][0] !== foodX && snakeBody2[j][1] !== foodY ){
                 continue;
             }else{
                 cond = 0;
@@ -179,44 +200,95 @@ const changeDirection = (e) =>{
         }
         
     }
-    if (e.key === "ArrowUp" && velocityY!= 1){
-        velocityX =0;
-        velocityY = -1;
+    if (e.key === "ArrowUp" && velocityY1!= 1){
+        velocityX1 =0;
+        velocityY1 = -1;
         if(gameStart===0){
+            velocityX2 =-1;
+            velocityY2 = 0;
             gameStart++;
         }
     }
-    else if (e.key === "ArrowDown" && velocityY!= -1){
-        velocityX =0;
-        velocityY = 1;
+    else if (e.key === "ArrowDown" && velocityY1!= -1){
+        velocityX1 =0;
+        velocityY1 = 1;
         if(gameStart===0){
+            velocityX2 =-1;
+            velocityY2 = 0;
             gameStart++;
         }
     }
-    else if (e.key === "ArrowRight" && velocityX!= -1){
-        velocityX =1;
-        velocityY = 0;
+    else if (e.key === "ArrowRight" && velocityX1!= -1){
+        velocityX1 =1;
+        velocityY1 = 0;        
         if(gameStart===0){
+            velocityX2 =-1;
+            velocityY2 = 0;
             gameStart++;
         }
     }
-    else if (e.key === "ArrowLeft" && velocityX!= 1){
-        velocityX =-1;
-        velocityY = 0;
+    else if (e.key === "ArrowLeft" && velocityX1!= 1){
+        velocityX1 =-1;
+        velocityY1 = 0;
         x1 =0;
         x2=0;
         y1 =1;
         y2 =2;
         if(gameStart===0){
+            velocityX2 =-1;
+            velocityY2 = 0;
+            gameStart++;
+        }
+    }
+    else if (e.key === 'w' && velocityY2!= 1){
+        velocityX2 =0;
+        velocityY2 = -1;
+        if(gameStart===0){
+            velocityX1 =1;
+            velocityY1 = 0;
+            gameStart++;
+        }
+    }
+    else if (e.key === 's' && velocityY2!= -1){
+        velocityX2 =0;
+        velocityY2 = 1;
+        if(gameStart===0){
+            gameStart++;
+            velocityX1 =1;
+            velocityY1 = 0;
+        }
+    }
+    else if (e.key === 'd' && velocityX2!= -1){
+        velocityX2 =1;
+        velocityY2 = 0;
+        if(gameStart===0){
+            velocityX1 =1;
+            velocityY1 = 0;
+            gameStart++;
+        }
+    }
+    else if (e.key === 'a' && velocityX2!= 1){
+        velocityX2 =-1;
+        velocityY2 = 0;
+        x1 =0;
+        x2=0;
+        y1 =1;
+        y2 =2;
+        if(gameStart===0){
+            velocityX1 =1;
+            velocityY1 = 0;
             gameStart++;
         }
     }
     //This function allows user to start the game by pressing any arrow key
     if(gameStart===1){   
         gameStart++;
-        snakeBody[0] = [snakeX,snakeY];
-        snakeBody.push([snakeX-x1, snakeY-y1]);
-        snakeBody.push([snakeX-x2, snakeY -y2]);    //Loads the food coordinates into the array   
+        snakeBody1[0] = [snakeX1,snakeY1];
+        snakeBody1.push([snakeX1-x1, snakeY1-y1]);
+        snakeBody1.push([snakeX1-x2, snakeY1 -y2]);    //Loads the food coordinates into the array 
+        snakeBody2[0] = [snakeX2,snakeY2];
+        snakeBody2.push([snakeX2+x1, snakeY2-y1]);
+        snakeBody2.push([snakeX2+x2, snakeY2 -y2]);  
         spawn_colors();
         spawnFood();
         spawn_teleport();     
@@ -236,21 +308,21 @@ const button_changeDirection = (a) =>{
         gameStart++;
     }
 
-    if (a=== "UP" && velocityY!= 1){
-        velocityX =0;
-        velocityY = -1;
+    if (a=== "UP" && velocityY1!= 1){
+        velocityX1 =0;
+        velocityY1 = -1;
     }
-    else if (a === "DOWN" && velocityY!= -1){
-        velocityX =0;
-        velocityY = 1;
+    else if (a === "DOWN" && velocityY1!= -1){
+        velocityX1 =0;
+        velocityY1 = 1;
     }
-    else if (a === "RIGHT" && velocityX!= -1){
-        velocityX =1;
-        velocityY = 0;
+    else if (a === "RIGHT" && velocityX1!= -1){
+        velocityX1 =1;
+        velocityY1 = 0;
     }
-    else if (a === "LEFT" && velocityX!= 1){
-        velocityX =-1;
-        velocityY = 0;
+    else if (a === "LEFT" && velocityX1!= 1){
+        velocityX1 =-1;
+        velocityY1 = 0;
         x1 =0;
         x2=0;
         y1 =1;
@@ -258,9 +330,9 @@ const button_changeDirection = (a) =>{
     }
     if(gameStart===1){
         gameStart++;
-        snakeBody[0] = [snakeX,snakeY];
-        snakeBody.push([snakeX-x1, snakeY-y1]);
-        snakeBody.push([snakeX-x2, snakeY-y2]);
+        snakeBody1[0] = [snakeX1,snakeY];
+        snakeBody1.push([snakeX1-x1, snakeY-y1]);
+        snakeBody1.push([snakeX1-x2, snakeY-y2]);
         spawn_colors();
         spawnFood();   
         timerId = setInterval(countDown,1000)
@@ -283,8 +355,14 @@ const powerup = () => {
                     break;
                 }
             }
-            for(let i =0; i < snakeBody.length; i++){
-                if(JSON.stringify(power_x) === JSON.stringify(snakeBody[i][0]) && JSON.stringify(power_y) === JSON.stringify(snakeBody[i][1])){
+            for(let i =0; i < snakeBody1.length; i++){
+                if(JSON.stringify(power_x) === JSON.stringify(snakeBody1[i][0]) && JSON.stringify(power_y) === JSON.stringify(snakeBody1[i][1])){
+                    cond =1;
+                    break;
+                }
+            }
+            for(let i =0; i < snakeBody2.length; i++){
+                if(JSON.stringify(power_x) === JSON.stringify(snakeBody2[i][0]) && JSON.stringify(power_y) === JSON.stringify(snakeBody2[i][1])){
                     cond =1;
                     break;
                 }
@@ -319,11 +397,20 @@ const spawn_teleport = () => {
                     break;
                 }
             }
-            for(let i =0; i < snakeBody.length; i++){
-                if(JSON.stringify(t1_x) === JSON.stringify(snakeBody[i][0]) && JSON.stringify(t1_y) === JSON.stringify(snakeBody[i][1])){
+            for(let i =0; i < snakeBody1.length; i++){
+                if(JSON.stringify(t1_x) === JSON.stringify(snakeBody1[i][0]) && JSON.stringify(t1_y) === JSON.stringify(snakeBody1[i][1])){
                     cond =1;
                     break;
-                }else if(JSON.stringify(t2_x) === JSON.stringify(snakeBody[i][0]) && JSON.stringify(t2_y) === JSON.stringify(snakeBody[i][1])){
+                }else if(JSON.stringify(t2_x) === JSON.stringify(snakeBody1[i][0]) && JSON.stringify(t2_y) === JSON.stringify(snakeBody1[i][1])){
+                    cond =1;
+                    break;
+                }
+            }
+            for(let i =0; i < snakeBody2.length; i++){
+                if(JSON.stringify(t1_x) === JSON.stringify(snakeBody2[i][0]) && JSON.stringify(t1_y) === JSON.stringify(snakeBody2[i][1])){
+                    cond =1;
+                    break;
+                }else if(JSON.stringify(t2_x) === JSON.stringify(snakeBody2[i][0]) && JSON.stringify(t2_y) === JSON.stringify(snakeBody2[i][1])){
                     cond =1;
                     break;
                 }
@@ -344,7 +431,7 @@ const initGame = () => {
     if (gameOver) return handleGameOver();
     
     if(grow){  //If snake has completed a sequence, snake will grow in size by 3 cells
-        snakeBody.push([snakeX, snakeY]);
+        snakeBody1.push([snakeX1, snakeY1]);
         grow--;
     }
 
@@ -372,13 +459,34 @@ const initGame = () => {
     } 
     playBoard.innerHTML = htmlMarkup;
     
+    //Checking if snakes collided
+    for(let i = 0; i < snakeBody1.length ; i++){
+        if(JSON.stringify(snakeX2) === JSON.stringify(snakeBody1[i][0]) && JSON.stringify(snakeY2) === JSON.stringify(snakeBody1[i][1])){
+            gameOver = true;
+            handleGameOver();
+        }
+    }
+    for(let i = 0; i < snakeBody2.length ; i++){
+        if(JSON.stringify(snakeX1) === JSON.stringify(snakeBody2[i][0]) && JSON.stringify(snakeY1) === JSON.stringify(snakeBody2[i][1])){
+            gameOver = true;
+            handleGameOver();
+        }
+    }
+
     //Checking if snake goes into a telport;
-    if(snakeX === t1_x && snakeY === t1_y){
-        snakeX = t2_x;
-        snakeY = t2_y;
-    }else if(snakeX === t2_x && snakeY === t2_y){
-        snakeX =t1_x;
-        snakeY =t1_y;
+    if(snakeX1 === t1_x && snakeY1 === t1_y){
+        snakeX1 = t2_x;
+        snakeY1 = t2_y;
+    }else if(snakeX1 === t2_x && snakeY1 === t2_y){
+        snakeX1 =t1_x;
+        snakeY1 =t1_y;
+    }
+    if(snakeX2 === t1_x && snakeY2 === t1_y){
+        snakeX2 = t2_x;
+        snakeY2 = t2_y;
+    }else if(snakeX2 === t2_x && snakeY2 === t2_y){
+        snakeX2 =t1_x;
+        snakeY2 =t1_y;
     }
 
     //Showing the color sequence
@@ -390,26 +498,30 @@ const initGame = () => {
     
     //Checking if any food is eaten
     for(let i =0 ; i < food.length; i++){
-        if (food[i][0]===snakeX && food[i][1]===snakeY){
-            food_eaten =1;
+        if (food[i][0]===snakeX1 && food[i][1]===snakeY1){
+            food_eaten1 =1;
+            index = i;
+        }
+        if (food[i][0]===snakeX2 && food[i][1]===snakeY2){
+            food_eaten2 =1;
             index = i;
         }
     }
 
     //Checking if snake ate a powerup
-    if(powerup_exist && snakeX===power_x && snakeY === power_y ){
+    if(powerup_exist && snakeX1===power_x && snakeY1 === power_y ){
         powerup_exist =0;
         currentTime +=2;
         audio_eatfood.play();
         let count =3;
-        while(count && snakeBody.length>3){
-            snakeBody.pop();
+        while(count && snakeBody1.length>3){
+            snakeBody1.pop();
             count--;
         }
     }
 
     //If eaten, then it will remove it from food array and grow the snake 
-    if(food_eaten){ 
+    if(food_eaten1){ 
         if(index!==0){
             gameOver = true;
             handleGameOver();
@@ -432,19 +544,62 @@ const initGame = () => {
             clearInterval(setIntervalID);
             setIntervalID = setInterval(initGame,speed);
         }
-        console.log(speed);
         food.splice(index,1)
         color_sequence.splice(index,1);   //Remove food from array
-        snakeBody.push([snakeX, snakeY]);  //Snake body grows at the position of the food
-        score++;
+        snakeBody1.push([snakeX1, snakeY1]);  //Snake body grows at the position of the food
+        score1++;
         //Adding time after player eats the food
         currentTime += 2;
         timerElement.innerText = `TIMER = ${currentTime}`;
-        highScore = score >highScore? score:highScore;
+        highScore = score1 >highScore? score1:highScore;
         localStorage.setItem("high-score" , highScore);        //High score gets updated
-        scoreElement.innerText = `Score = ${score}`;
+        scoreElement.innerText = `Score = ${score1}`;
         highScoreElement.innerText = `High Score = ${highScore}`;
-        food_eaten=0;
+        food_eaten1=0;
+
+        //Checking if powerup is spawned or not
+        if(powerup_exist === 0){
+            powerup();
+        }
+    
+    }
+
+    if(food_eaten2){ 
+        if(index!==0){
+            gameOver = true;
+            handleGameOver();
+        }
+        
+        audio_eatfood.play();
+        
+        if(speed > 150){
+            speed -= 10;
+            clearInterval(setIntervalID);
+            setIntervalID = setInterval(initGame,speed);
+        }
+        else if(speed > 120){
+            speed -= 7;
+            clearInterval(setIntervalID);
+            setIntervalID = setInterval(initGame,speed);
+        }
+        else if(speed >90){
+            speed -=5;
+            clearInterval(setIntervalID);
+            setIntervalID = setInterval(initGame,speed);
+        }
+        food.splice(index,1)
+        color_sequence.splice(index,1);   //Remove food from array
+        snakeBody2.push([snakeX2, snakeY2]);  //Snake body grows at the position of the food
+        score2++;
+        //Adding time after player eats the food
+        currentTime += 2;
+        timerElement.innerText = `TIMER = ${currentTime}`;
+        highScore = score1 >highScore? score1:highScore;
+        highScore = score2 >highScore? score2:highScore;
+        localStorage.setItem("high-score" , highScore);        //High score gets updated
+        scoreElement.innerText = `Score = ${score1}`;
+        highScoreElement.innerText = `High Score = ${highScore}`;
+        food_eaten2=0;
 
         //Checking if powerup is spawned or not
         if(powerup_exist === 0){
@@ -468,28 +623,49 @@ const initGame = () => {
     
     
     
-    for(let i = snakeBody.length -1; i> 0; i-- ){
-        snakeBody[i] = snakeBody[i-1];      //Snake body is travelling by shifting each cell to the next position
+    for(let i = snakeBody1.length -1; i> 0; i-- ){
+        snakeBody1[i] = snakeBody1[i-1];      //Snake body is travelling by shifting each cell to the next position
+    }
+    for(let i = snakeBody2.length -1; i> 0; i-- ){
+        snakeBody2[i] = snakeBody2[i-1];      //Snake body is travelling by shifting each cell to the next position
     }
     
-    snakeX += velocityX;
-    snakeY += velocityY; 
-    snakeBody[0] = [snakeX,snakeY];
+    snakeX1 += velocityX1;
+    snakeY1 += velocityY1; 
+    snakeBody1[0] = [snakeX1,snakeY1];
+
+    snakeX2 += velocityX2;
+    snakeY2 += velocityY2; 
+    snakeBody2[0] = [snakeX2,snakeY2];
     
     //If snake crashes into a wall
-    if(snakeX < 0 || snakeX >grid_x || snakeY < 0 || snakeY > grid_y){
+    if(snakeX1 < 0 || snakeX1 >grid_x || snakeY1 < 0 || snakeY1 > grid_y){
+        gameOver = true;
+        handleGameOver();
+    }
+    if(snakeX2 < 0 || snakeX2 >grid_x || snakeY2 < 0 || snakeY2 > grid_y){
         gameOver = true;
         handleGameOver();
     }
 
-    htmlMarkup += `<div class ="head" style="grid-area: ${snakeBody[0][1]}/ ${snakeBody[0][0]}"> </div>`;
+    htmlMarkup += `<div class ="head" style="grid-area: ${snakeBody1[0][1]}/ ${snakeBody1[0][0]}"> </div>`;
+    htmlMarkup += `<div class ="head" style="grid-area: ${snakeBody2[0][1]}/ ${snakeBody2[0][0]}"> </div>`;
 
     //Updating the snake array on the grid
-    for(let i =1; i < snakeBody.length; i++){
+    for(let i =1; i < snakeBody1.length; i++){
          
-        htmlMarkup += `<div class ="snake_body" style="grid-area: ${snakeBody[i][1]}/ ${snakeBody[i][0]}"> </div>`;
+        htmlMarkup += `<div class ="snake_body" style="grid-area: ${snakeBody1[i][1]}/ ${snakeBody1[i][0]}"> </div>`;
 
-        if(i!== 0 && snakeBody[0][1] === snakeBody[i][1] && snakeBody[0][0] === snakeBody[i][0]){
+        if(i!== 0 && snakeBody1[0][1] === snakeBody1[i][1] && snakeBody1[0][0] === snakeBody1[i][0]){
+            
+            gameOver = true;
+        }
+    } 
+    for(let i =1; i < snakeBody2.length; i++){
+         
+        htmlMarkup += `<div class ="snake_body" style="grid-area: ${snakeBody2[i][1]}/ ${snakeBody2[i][0]}"> </div>`;
+
+        if(i!== 0 && snakeBody2[0][1] === snakeBody2[i][1] && snakeBody2[0][0] === snakeBody2[i][0]){
             
             gameOver = true;
         }
