@@ -723,6 +723,12 @@ const initGame = () => {
 
 }
 
+
+// grid_x = prompt("Enter width");
+// grid_y = prompt("Enter height");
+playBoard.style.gridTemplateColumns = `repeat(${grid_x}, 1fr)`
+playBoard.style.gridTemplateRows = `repeat(${grid_y}, 1fr)`
+
 document.addEventListener("keydown", changeDirection);
 
 

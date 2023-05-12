@@ -5,7 +5,7 @@ const highScoreElement = document.querySelector(".high-score")
 const timerElement = document.querySelector(".timer")
 const livesElement = document.querySelector(".lives")
 
-let grid_x , grid_y;
+let grid_x=20, grid_y=20;
 let gameOver = false;
 let foodX, foodY;
 let snakeBody = [];
@@ -431,8 +431,8 @@ const initGame = () => {
 
 }
 
-grid_x = prompt("Enter width");
-grid_y = prompt("Enter height");
+// grid_x = prompt("Enter width");
+// grid_y = prompt("Enter height");
 playBoard.style.gridTemplateColumns = `repeat(${grid_x}, 1fr)`
 playBoard.style.gridTemplateRows = `repeat(${grid_y}, 1fr)`
 
