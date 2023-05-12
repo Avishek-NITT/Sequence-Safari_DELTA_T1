@@ -310,7 +310,7 @@ const initGame = () => {
     //Spawning food every iteration
     for(let i =0; i < food.length; i++){
         if(i ===0){
-            htmlMarkup+=`<div class = "food" style="font-size: 100%;font-weight:bold;grid-area: ${food[i][1]}/ ${food[i][0]}; "> ${color_sequence[i]} </div>`;
+            htmlMarkup+=`<div class = "food" style="color:red;font-size: 1.2em;font-weight:bold;grid-area: ${food[i][1]}/ ${food[i][0]}; "> ${color_sequence[i]} </div>`;
         }else{
             htmlMarkup+=`<div class = "food" style="grid-area: ${food[i][1]}/ ${food[i][0]};"> ${color_sequence[i]} </div>`;
         }

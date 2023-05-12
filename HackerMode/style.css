@@ -39,8 +39,10 @@
     flex-direction: column;
 }
 body{
-    background-image: linear-gradient(to right, #8e2de2, #4a00e0);
-    background-size: cover;    
+    /* background-image: linear-gradient(to right, #8e2de2, #4a00e0); */
+    background-image: url("Pictures/BG4.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;    
     background-position:50% 50%;
     display: flex;
     align-items: top;
@@ -70,7 +72,8 @@ body{
 }
 
 .playground{
-    background-color: rgb(143, 255, 161);
+    /* background-color: rgb(143, 255, 161); */
+    background-color: transparent;
     width: 100%;
     height: 67%;
     display: grid;
@@ -83,7 +86,8 @@ body{
 
 .food{
     text-align:center;
-    font-size: 80%;
+    font-size: 0.8em;
+    color: rgb(0, 217, 255) ;
 }
 
 .head{
@@ -195,6 +199,7 @@ body{
     color: transparent;
     background-image: url(Pictures/Potion.png);
     background-size: cover;
+    overflow: none;
     background-position: center;  
 }
 
