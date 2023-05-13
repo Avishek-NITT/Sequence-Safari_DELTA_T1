@@ -6,6 +6,18 @@
     font-family: font_details;
     src: url(Font/zero\ hour.otf);
 }
+@font-face {
+    font-family: startup_font;
+    src: url(Font/Fifth-Grader.ttf);
+}
+@font-face {
+    font-family: press_text;
+    src: url(Font/FRESHBOT.TTF);
+}
+@font-face {
+    font-family: gameover_text;
+    src: url(Font/Fifth-Grader.ttf);
+}
 
 @keyframes blink-text {
     0% {
@@ -18,8 +30,23 @@
      opacity: 0;
     }
 }
-
-
+@keyframes waviy {
+    0%,40%,100% {
+      transform: translateY(0)
+    }
+    20% {
+      transform: translateY(-20px)
+    }
+}
+  @keyframes example {
+    0%{color:lime; text-shadow:0 0 20px green;}
+    25%{color:green; text-shadow:2px 2px 2px lime; transform: translate(-2px,1px);}
+    40%{color:lime; text-shadow:none; transform: translate(0,0);}
+    50%{color:green; text-shadow:5px 5px 2px blue, -5px -5px 2px red; transform: translate(0px,5px);}
+    70%{color:lime; text-shadow:none; transform: translate(0,0);}
+    80%{color:lime; text-shadow:0 0 20px green; transform: translate(-2px,1px);}
+    100%{color:lime; text-shadow:none;}
+  }
 *{
     padding: 0;
     margin: 0;
@@ -186,7 +213,68 @@ body{
   }
 
   
-  
+
+  .start_modal{
+    background-color: transparent;
+    backdrop-filter:blur(6px) ;
+    margin: auto;
+    height: 100vh;
+    width: 50vw;
+    align-items: center;
+    border-radius: 5%;
+  }
+
+  .start_modal::backdrop{
+    background-color: black;
+  }
+
+
+  #start_text{
+    color: white;
+    padding: 0;
+    position: absolute;
+    font-family: press_text;
+    left: 23%;
+    top: 70%;
+    font-size: 2em;
+    animation: blink-text 2s linear infinite;
+  }
+  #game_name{
+    color: white;
+    position: absolute;
+    font-family: startup_font;
+    left: 28%;
+    top: 30%;
+    font-size: 4em;
+    text-align: center;
+    -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
+    animation: waviy 2s infinite;
+    animation-delay: calc(.1s * var(--i));
+  }
+
+
+  .game_over{
+    background-color: transparent;
+    backdrop-filter:blur(6px) ;
+    margin: auto;
+    height: 100vh;
+    width: 50vw;
+    align-items: center;
+    border-radius: 5%;
+  }
+  .game_over::backdrop{
+    background-color: black;
+  }
+
+  #game_over_text{
+    animation: example 1s infinite;
+    position: absolute;
+    font-size: 3em;
+    font-family: gameover_text;
+    left: 39%;
+    top: 42%;
+  }
+
 
 
 

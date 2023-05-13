@@ -3,7 +3,12 @@ const sequence = document.querySelector(".color_seq");
 const scoreElement= document.querySelector(".score");
 const highScoreElement = document.querySelector(".high-score")
 const timerElement = document.querySelector(".timer")
+const start_modal = document.querySelector("#start_modal")
+const gameover_modal = document.querySelector("#game_over")
 
+let eat_food = new Audio("Audio/eatingfood.mp3");
+let audio_sequence = new Audio("Audio/sequence_complete.mp3");
+let game_over_audio = new Audio("Audio/game_over.mp3")
 let gameOver = false;
 let foodX, foodY;
 let snakeBody = [];
@@ -39,8 +44,14 @@ timerElement.innerText = `TIMER = ${currentTime}`;
 const handleGameOver = () => {
     clearInterval(setIntervalID);
     clearInterval(timerId);
-    alert("GAME OVERR!!!");
-    location.reload();
+    // alert("GAME OVERR!!!");
+    game_over_audio.play()
+    game_over.showModal();
+
+    document.addEventListener("keydown", () =>{
+        location.reload();
+    })
+
 
 }
 
@@ -140,6 +151,7 @@ const changeDirection = (e) =>{
     }
     
     if(gameStart===1){   //Game starts here
+        start_modal.close()
         gameStart++;
         snakeBody[0] = [snakeX,snakeY];
         snakeBody.push([snakeX-x1, snakeY-y1]);
@@ -225,9 +237,7 @@ const initGame = () => {
         if(index!==0){
             gameOver = true;
             handleGameOver();
-        }
-
-
+        }        
         food.splice(index,1)
         color_sequence.splice(index,1);   //Remove food from array
         snakeBody.push([snakeX, snakeY]);  //Snake body grows at the position of the food
@@ -240,9 +250,13 @@ const initGame = () => {
         scoreElement.innerText = `Score = ${score}`;
         highScoreElement.innerText = `High Score = ${highScore}`;
         food_eaten=0;
+        if(food.length !== 0){
+            eat_food.play();
+        }
     
     }    
     if(food.length===0){
+        audio_sequence.play();
         currentTime += 10;
         spawn_colors();
         spawnFood();
@@ -296,11 +310,7 @@ const initGame = () => {
     playBoard.innerHTML = htmlMarkup;
 
 }
-
-
-// htmlMarkup+=`<div style="grid-area: 4/5; background-color: #FF0000;" > </div>`;
-// playBoard.innerHTML = htmlMarkup;
-
+start_modal.showModal()
 
 document.addEventListener("keydown", changeDirection);
 
