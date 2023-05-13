@@ -4,6 +4,8 @@ const scoreElement= document.querySelector(".score");
 const highScoreElement = document.querySelector(".high-score")
 const timerElement = document.querySelector(".timer")
 const livesElement = document.querySelector(".lives")
+const start_modal = document.querySelector("#start_modal")
+const gameover_modal = document.querySelector("#game_over")
 
 let grid_x=20, grid_y=20;
 let gameOver = false;
@@ -33,7 +35,11 @@ let word_array = [
 ];
 let game_pause = 0;
 let color_sequence = [];
+let buffs = ["buff_shrink", "buff_life", "buff_time"]
+let power_index;
 let audio_eatfood = new Audio("Audio/eat-food_DcmYIN6Y.mp3");
+let game_over_audio = new Audio("Audio/game_over.mp3")
+let live_lost_audio = new Audio("Audio/livelost.mp3")
 let grow = 0;
 let highScore = localStorage.getItem("high-score") || 0;
 highScoreElement.innerText = `High Score = ${highScore}`;
@@ -49,44 +55,53 @@ const handleGameOver = () => {
         // If user still has lives, everything except score is resetted and the game restarts
         clearInterval(setIntervalID);
         clearInterval(timerId);
-        let x1 =1;
-        let x2= 2;
-        let y1 =0;
-        let y2 =0;
-        velocityX =1;
-        velocityY = 0;
-        powerup_exist =0;
-        htmlMarkup ="";
-        playBoard.innerHTML = htmlMarkup;
-        snakeBody.length =0;
-        food.length =0;
-        snakeX = 10;
-        snakeY = 10;
-        currentTime = 15;
-        snakeBody[0] = [snakeX,snakeY];
-        snakeBody.push([snakeX-x1, snakeY-y1]);
-        snakeBody.push([snakeX-x2, snakeY -y2]);    //Loads the food coordinates into the array  
-        word_array.length = 0;
-        word_array =  [
-            ['D', 'E', 'L', 'T','A'],
-            ['T','A', 'S', 'K'],
-            ['W', 'E', 'B', 'D','E','V'],
-            ['S', 'Y','S','A','D'],
-            ['A','P','P','D','E','V']
-        ];
-        spawn_colors();
-        spawnFood();
-        gameOver = false; 
-        livesElement.innerText = `LIVES : ${lives}`;
-        speed = 180;
-        timerId = setInterval(countDown,1000)
-        setIntervalID = setInterval(initGame,speed);
+        live_lost_audio.play();
+        setTimeout(() =>{
+            let x1 =1;
+            let x2= 2;
+            let y1 =0;
+            let y2 =0;
+            velocityX =1;
+            velocityY = 0;
+            powerup_exist =0;
+            htmlMarkup ="";
+            playBoard.innerHTML = htmlMarkup;
+            snakeBody.length =0;
+            food.length =0;
+            snakeX = 10;
+            snakeY = 10;
+            currentTime = 15;
+            snakeBody[0] = [snakeX,snakeY];
+            snakeBody.push([snakeX-x1, snakeY-y1]);
+            snakeBody.push([snakeX-x2, snakeY -y2]);    //Loads the food coordinates into the array  
+            word_array.length = 0;
+            word_array =  [
+                ['D', 'E', 'L', 'T','A'],
+                ['T','A', 'S', 'K'],
+                ['W', 'E', 'B', 'D','E','V'],
+                ['S', 'Y','S','A','D'],
+                ['A','P','P','D','E','V']
+            ];
+            spawn_colors();
+            spawnFood();
+            gameOver = false; 
+            livesElement.innerText = `LIVES : ${lives}`;
+            speed = 180;
+            timerId = setInterval(countDown,1000)
+            setIntervalID = setInterval(initGame,speed);
+        }, 1300);
+        
     }else{
         //If no lives remaining, game ends with an alert
         clearInterval(setIntervalID);
         clearInterval(timerId);
-        alert("GAME OVERR!!!");
-        location.reload();
+        game_over_audio.play();
+        document.getElementById('game_over').style.display = "flex";
+        game_over.showModal();
+
+        document.addEventListener("keydown", () =>{
+            location.reload();
+        })
     }
     
 
@@ -207,7 +222,13 @@ const changeDirection = (e) =>{
         }
     }
     //This function allows user to start the game by pressing any arrow key
-    if(gameStart===1){   
+    if(gameStart===1){  
+        start_modal.close();
+        grid_x = prompt("Enter width");
+        grid_y = prompt("Enter height");
+        playBoard.style.gridTemplateColumns = `repeat(${grid_x}, 1fr)`
+        playBoard.style.gridTemplateRows = `repeat(${grid_y}, 1fr)`
+        document.getElementById("start_modal").style.display = "none";
         gameStart++;
         snakeBody[0] = [snakeX,snakeY];
         snakeBody.push([snakeX-x1, snakeY-y1]);
@@ -265,6 +286,7 @@ const button_changeDirection = (a) =>{
 //Implementing powerup
 const powerup = () => {
     let d = getRandomInt(20); //This decides whether a powerup will be spawned or not
+    d =6;
     if(d > 5 && d < 12){
         let cond =1;
         while(cond){
@@ -284,7 +306,11 @@ const powerup = () => {
                 }
             }
         }
-        htmlMarkup += `<div class ="buff_shrink" style ="grid-area: ${power_y}/${power_x}">P1</div> `
+        power_index =getRandomInt(3);
+
+
+
+        htmlMarkup += `<div class =${buffs[power_index]} style ="grid-area: ${power_y}/${power_x}">P1</div> `
         playBoard.innerHTML = htmlMarkup;
 
         powerup_exist=1;
@@ -304,7 +330,7 @@ const initGame = () => {
 
     htmlMarkup = "";
     if(powerup_exist){
-        htmlMarkup += `<div class ="buff_shrink" style ="grid-area: ${power_y}/${power_x}">P1</div> `
+        htmlMarkup += `<div class =${buffs[power_index]} style ="grid-area: ${power_y}/${power_x}">P1</div> `
         playBoard.innerHTML = htmlMarkup;
     }
     //Spawning food every iteration
@@ -338,11 +364,20 @@ const initGame = () => {
         powerup_exist =0;
         currentTime +=2;
         audio_eatfood.play();
-        let count =3;
-        while(count && snakeBody.length>3){
-            snakeBody.pop();
-            count--;
+
+        if(power_index === 0){
+            let count =3;
+            while(count && snakeBody.length>3){
+                snakeBody.pop();
+                count--;
+            }
+        }else if (power_index === 1){
+            lives++;
+            livesElement.innerText = `LIVES : ${lives}`;
+        }else if(power_index === 2){
+            currentTime += 5;
         }
+        
     }
 
     //If eaten, then it will remove it from food array and grow the snake 
@@ -428,13 +463,16 @@ const initGame = () => {
         }
     } 
     playBoard.innerHTML = htmlMarkup;
+    
 
 }
 
-// grid_x = prompt("Enter width");
-// grid_y = prompt("Enter height");
-playBoard.style.gridTemplateColumns = `repeat(${grid_x}, 1fr)`
-playBoard.style.gridTemplateRows = `repeat(${grid_y}, 1fr)`
+
+start_modal.showModal()
+
+
+
+
 
 document.addEventListener("keydown", changeDirection);
 

@@ -151,7 +151,8 @@ const changeDirection = (e) =>{
     }
     
     if(gameStart===1){   //Game starts here
-        start_modal.close()
+        // start_modal.close()
+        document.getElementById("start_modal").style.display = "none";
         gameStart++;
         snakeBody[0] = [snakeX,snakeY];
         snakeBody.push([snakeX-x1, snakeY-y1]);
@@ -311,6 +312,7 @@ const initGame = () => {
 
 }
 start_modal.showModal()
+// document.getElementById("start_modal").style.display = "none";
 
 document.addEventListener("keydown", changeDirection);
 
