@@ -48,9 +48,9 @@ const handleGameOver = () => {
     game_over_audio.play()
     game_over.showModal();
 
-    document.addEventListener("keydown", () =>{
+    setTimeout(()=>{
         location.reload();
-    })
+    },1400)
 
 
 }
@@ -117,6 +117,11 @@ const changeDirection = (e) =>{
     let y1 =0;
     let y2 =0;
 
+    if(gameStart === 0){
+        velocityX = 1;
+        velocityY =0;
+        gameStart++;
+    }
     if (e.key === "ArrowUp" && velocityY!= 1){
         velocityX =0;
         velocityY = -1;
