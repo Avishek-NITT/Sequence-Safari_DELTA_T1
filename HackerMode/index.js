@@ -98,10 +98,10 @@ const handleGameOver = () => {
         game_over_audio.play();
         document.getElementById('game_over').style.display = "flex";
         game_over.showModal();
-
-        document.addEventListener("keydown", () =>{
+        
+        setTimeout(() => {
             location.reload();
-        })
+        },1500)
     }
     
 
@@ -286,7 +286,6 @@ const button_changeDirection = (a) =>{
 //Implementing powerup
 const powerup = () => {
     let d = getRandomInt(20); //This decides whether a powerup will be spawned or not
-    d =6;
     if(d > 5 && d < 12){
         let cond =1;
         while(cond){
