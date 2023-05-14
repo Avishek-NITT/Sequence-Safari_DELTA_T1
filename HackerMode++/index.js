@@ -474,7 +474,7 @@ const initGame = () => {
         let d = getRandomInt(20);
         if(d > 8 && d < 12){
             obstacle_exist =1;
-            ob_y = getRandomInt(20);
+            ob_y = getRandomInt(grid_y);
             if(ob_y ===0){
                 ob_y =1;
             }
@@ -482,7 +482,7 @@ const initGame = () => {
     }
     //If it is decided to throw obstacle 
     if(obstacle_exist === 1){
-        if(ob_x === 21){
+        if(ob_x === grid_x + 1){
             obstacle_exist =0;
             ob_x =0;
         }else{
