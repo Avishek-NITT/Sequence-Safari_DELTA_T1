@@ -474,7 +474,6 @@ start_modal.showModal()
 
 
 
-
 document.addEventListener("keydown", changeDirection);
 
 

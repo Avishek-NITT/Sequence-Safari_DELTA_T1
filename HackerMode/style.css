@@ -326,6 +326,22 @@ body{
     top: 42%; */
   }
 
+
+  @media screen and (max-width: 760px){
+    #game_name{
+      font-size: 2.3em;
+    }
+    #start_text{
+      font-size: 1.3em;
+      text-align: center;
+    }
+    .game-name{
+      font-size: 0.8em;
+    }
+    #game_over_text{
+      left: 20%
+    }
+  }
   
   
   
