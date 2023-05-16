@@ -68,7 +68,6 @@ body{
     background-color: #181825;
     background-size: cover;
     background-position:50% 50%;
-    
     display: flex;
     align-items: top;
     justify-content: center;
@@ -122,7 +121,8 @@ body{
 }
 
 .snake_body{
-    background: green;
+    background: rgb(109, 255, 109);
+
     
 }
 
@@ -282,6 +282,42 @@ body{
     top: 42%;
   }
 
+
+
+  @media screen and (max-width: 760px){
+    #game_name{
+      font-size: 2.3em;
+    }
+    #start_text{
+      font-size: 1.3em;
+    }
+    .game-name{
+      font-size: 0.8em;
+    }
+    .game-details{
+      font-size: 0.7em;
+    }
+    .keys{
+      margin-right: 3%;
+      height: 10vh;
+    }
+    .arr_button{
+      height: 6vh;
+    }
+    .color_seq{
+      overflow: none;
+    }
+    .color_blocks{
+      margin: 0;
+      border-radius: 50%;    
+    }
+    #game_over_text{
+      left: 20%;
+    }
+    .game_over{
+      width: 70vw;
+    }
+  }
 
 
 

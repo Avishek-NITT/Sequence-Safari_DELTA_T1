@@ -181,7 +181,7 @@ const changeDirection = (e) =>{
     let y1 =0;
     let y2 =0;
 
-    if(e.key === 'p'){
+    if(e.key === 'p' && gameStart !== 0){
         if(game_pause === 0){
             pausegame();
         }else{
@@ -375,6 +375,8 @@ const initGame = () => {
             livesElement.innerText = `LIVES : ${lives}`;
         }else if(power_index === 2){
             currentTime += 5;
+            timerElement.innerText = `TIMER = ${currentTime}`;
+
         }
         
     }
